@@ -17,8 +17,8 @@ modules:
       SAP_JWT_TRUST_ACL: '[{"clientid":"*","identityzone":"*"}]'
     parameters:
       buildpack: nodejs_buildpack
-      disk-quota: 128M
-      memory: 56M
+      disk-quota: 256M
+      memory: 128M
     build-parameters:
       builder: npm
     provides:
