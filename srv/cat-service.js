@@ -15,8 +15,18 @@ class CatalogService extends cds.ApplicationService {
         //----------------------------------------------------------------------------------//
         
         this.on('getUser',  async (req) => {  
-            console.log(req.user);
-            return  req.user ;
+            return  {
+                id : req.user.id,
+                _roles: req.user._roles,
+                attr : {         
+                    email: req.user.attr.email,
+                    familyName: req.user.attr.familyName,
+                    givenName: req.user.attr.givenName,
+                    logonName: req.user.attr.logonName,
+                }
+            }
+    
+      
         }); 
 
         
