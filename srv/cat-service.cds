@@ -1,7 +1,7 @@
 
 
 @protocol: ['odata']
-service CatalogService @( requires:'authenticated-user') {
+service CatalogService  @( requires: ['sbpa_call', 'authenticated-user', 'system-user']) {
  
  
     type user {

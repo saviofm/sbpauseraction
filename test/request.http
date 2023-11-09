@@ -1,0 +1,23 @@
+@server = http://localhost:4004
+@basic = Authorization: Basic admin:admin
+
+
+### ------------------------------------------------------------------------
+### ------------------------------------------------------------------------
+### -------------------------------CATALOG----------------------------------
+### ------------------------------------------------------------------------
+### ------------------------------------------------------------------------
+### ------------------------------------------------------------------------
+# Load Products - Action - post
+GET {{server}}/odata/v4/catalog/getUser()
+content-type: application/json
+Accept: application/json
+
+
+
+###
+# Load Products - Action - post
+GET  {{server}}/odata/v4/catalog/$metadata"
+content-type: application/json
+Accept: application/json
+{{basic}}
