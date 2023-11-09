@@ -52,7 +52,7 @@ resources:
               Name: sbpauseraction
               ProxyType: Internet
               Type: HTTP
-              URL: ~{srv-api/srv-url}
+              URL: ~{srv-api/srv-url}/odata/v4/catalog
               WebIDEEnabled: true
               WebIDEUsage: odata_gen
               sap.applicationdevelopment.actions.enabled: true
