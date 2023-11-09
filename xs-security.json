@@ -1,0 +1,35 @@
+{
+  "xsappname": "sbpauseraction",
+  "tenant-mode": "dedicated",
+  "description": "Security profile of called application",
+  "authorities":["$ACCEPT_GRANTED_AUTHORITIES","$XSAPPNAME(application,sbpauseraction).sbpauseraction_foreigncall"],
+  "scopes": [
+    { 
+      "name" : "$XSAPPNAME.sbpauseraction_foreigncall", 
+      "description" : "Enable calls into scope-granting app"
+    },
+    {
+      "name": "$XSAPPNAME.sbpacall",
+      "description": "SBPA Access",
+      "grant-as-authority-to-apps": [
+        "$XSSERVICENAME(sap_processautomation)"
+      ]
+    },               
+    {
+      "name": "uaa.user",
+      "description": "UAA"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [                           
+    {
+      "name": "Token_Exchange",
+      "description": "UAA",
+      "scope-references": [
+        "uaa.user"
+      ]
+    }
+  ],
+  "role-collections": [                                    
+]
+}

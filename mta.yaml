@@ -1,0 +1,68 @@
+_schema-version: '3.1'
+ID: sbpauseraction
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npx cds build --production
+modules:
+  - name: sbpauseraction-srv
+    type: nodejs
+    path: gen/srv
+    properties:
+      SAP_JWT_TRUST_ACL: '[{"clientid":"*","identityzone":"*"}]'
+    parameters:
+      buildpack: nodejs_buildpack
+      disk-quota: 128M
+      memory: 56M
+    build-parameters:
+      builder: npm
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: sbpauseraction-auth
+      - name: sbpauseraction-destination-service
+      - name: sap_processautomation
+resources:
+  - name: sbpauseraction-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+  - name: sbpauseraction-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      config:
+        init_data:
+          subaccount:
+            destinations:
+            - AppgyverEnabled: true
+              Authentication: NoAuthentication
+              Description: SBPA User Action Destination Service
+              HTML5.DynamicDestination: true
+              HTML5.ForwardAuthToken: true
+              HTML5.Timeout: 300000
+              Name: sbpauseraction
+              ProxyType: Internet
+              Type: HTTP
+              URL: ~{srv-api/srv-url}
+              WebIDEEnabled: true
+              WebIDEUsage: odata_gen
+              sap.applicationdevelopment.actions.enabled: true
+              sap.processautomation.enabled: true
+            existing_destinations_policy: update
+        version: 1.0.0
+      service: destination
+      service-name: sbpauseraction-destination-service
+      service-plan: lite
+    requires:
+    - name: srv-api    
+  - name: sap_processautomation
+    type: org.cloudfoundry.existing-service
